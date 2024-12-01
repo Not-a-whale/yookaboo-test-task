@@ -1,0 +1,34 @@
+<div>
+  <h3 class="text-3xl text-center pt-6 mb-3">Фільтри</h3>
+  <mat-divider></mat-divider>
+  <div class="flex gap-6 p-8 pb-0">
+    <div class="w-1/2">
+      <h4 class="font-semibold text-xl text-primary">Автор</h4>
+      <mat-selection-list
+        [(ngModel)]="selectedAuthors"
+        [multiple]="true"
+        class="max-h-[50vh] overflow-y-auto py-2"
+      >
+        @for (author of shopService.getAuthors() | async; track $index) {
+          <mat-list-option [value]="author">
+            {{ author }}
+          </mat-list-option>
+        }
+      </mat-selection-list>
+    </div>
+    <div class="w-1/2">
+      <h4 class="font-semibold text-xl text-primary">Жанр</h4>
+      <mat-selection-list [(ngModel)]="selectedGenres" [multiple]="true"
+      class="max-h-[50vh] overflow-y-auto py-2">
+        @for (genre of shopService.getGenres() | async; track $index) {
+          <mat-list-option [value]="genre">
+            {{ genre }}
+          </mat-list-option>
+        }
+      </mat-selection-list>
+    </div>
+  </div>
+  <div class="flex justify-center pt-2 pb-6">
+    <button mat-flat-button (click)="applyFilters()">Застосувати фільтри</button>
+  </div>
+</div>
