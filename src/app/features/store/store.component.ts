@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from "@angular/core";
-import {MatPaginator, MatPaginatorModule, PageEvent} from "@angular/material/paginator";
+import {MatPaginatorIntl, MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {FormsModule} from "@angular/forms";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
@@ -10,8 +10,9 @@ import {StoreService} from "../../core/services/store.service";
 import {Pagination} from "../../shared/models/pagination";
 import {Product} from "../../shared/models/product";
 import {StoreParams} from "../../shared/models/storeParams";
-import {FiltersDialogComponent} from "./filters-dialog/filters-dialog.component";
-import {UkrainianPaginatorComponent} from "../../shared/components/ukrainian-paginator/ukrainian-paginator.component";
+import {ProductFiltersDialogComponent} from "./product-filters-dialog/product-filters-dialog.component";
+import {UkrainianPaginatorIntl} from "../../shared/classes/ukrainian-paginator";
+import {ProductItemComponent} from "./product-item/product-item.component";
 
 @Component({
   selector: 'app-store',
@@ -26,8 +27,9 @@ import {UkrainianPaginatorComponent} from "../../shared/components/ukrainian-pag
     MatMenu,
     MatSelectionList,
     MatListOption,
-    UkrainianPaginatorComponent
+    ProductItemComponent,
   ],
+  providers: [{provide: MatPaginatorIntl, useClass: UkrainianPaginatorIntl}],
   templateUrl: './store.component.html',
   styleUrl: './store.component.scss'
 })
@@ -66,7 +68,7 @@ export class StoreComponent implements OnInit {
   }
 
   openFiltersDialog() {
-    const dialogRef = this.dialogService.open(FiltersDialogComponent, {
+    const dialogRef = this.dialogService.open(ProductFiltersDialogComponent, {
       minWidth: '500px',
       maxHeight: '80vh',
       data: {

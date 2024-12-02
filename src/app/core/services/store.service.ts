@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {StoreParams} from "../../shared/models/storeParams";
 import {Product} from "../../shared/models/product";
-import {map, Observable, of} from "rxjs";
+import {BehaviorSubject, map, Observable, of} from "rxjs";
 import {Pagination} from "../../shared/models/pagination";
 
 
@@ -89,7 +89,7 @@ const products = [
     price: 340,
     pictureUrls: ['https://static.yakaboo.ua/media/catalog/product/5/3/53225_28767120.jpg'],
     genre: 'Роман',
-    author: 'Дмитро Климчук',
+    author: 'Рональд Даль',
     quantityInStock: 18,
     tags: [
       { name: 'Нове', hexColor: '#FF5733' },
@@ -164,16 +164,21 @@ const products = [
 })
 export class StoreService {
 
+  private products$ = new BehaviorSubject<Product[]>(products);
+
   getProducts(shopParams: StoreParams): Observable<Pagination<Product>> {
-    return of(products.filter(product => {
-      if (shopParams.authors.length > 0 && !shopParams.authors.includes(product.author)) {
-        return false;
-      }
-      if (shopParams.genres.length > 0 && !shopParams.genres.includes(product.genre)) {
-        return false;
-      }
-      return !(shopParams.search && !product.name.toLowerCase().includes(shopParams.search));
-    })).pipe(
+    return this.products$.pipe(
+      map(products => {
+        return products.filter(product => {
+          if (shopParams.authors.length > 0 && !shopParams.authors.includes(product.author)) {
+            return false;
+          }
+          if (shopParams.genres.length > 0 && !shopParams.genres.includes(product.genre)) {
+            return false;
+          }
+          return !(shopParams.search && !product.name.toLowerCase().includes(shopParams.search));
+        });
+      }),
       map(products => {
         return products.sort((a, b) => {
           switch (shopParams.sort) {
@@ -200,14 +205,26 @@ export class StoreService {
   }
 
   getProuct(id: number) {
-    return of(products.find(product => product.id === String(id)));
+    return this.products$.pipe(
+      map(products => products.find(product => product.id === String(id)))
+    );
   }
 
   getAuthors() {
-    return of(products.map(products => products.author).filter((value, index, self) => self.indexOf(value) === index));
+    return this.products$.pipe(
+      map(products => products.map(product => product.author)),
+      map(authors => authors.filter((value, index, self) => self.indexOf(value) === index))
+    );
   }
 
   getGenres() {
-    return of(products.map(products => products.genre).filter((value, index, self) => self.indexOf(value) === index));
+    return this.products$.pipe(
+      map(products => products.map(product => product.genre)),
+      map(genres => genres.filter((value, index, self) => self.indexOf(value) === index))
+    );
+  }
+
+  deleteProduct(id: string) {
+    this.products$.next(this.products$.value.filter(product => product.id !== id));
   }
 }

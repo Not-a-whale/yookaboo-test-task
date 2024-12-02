@@ -4,7 +4,7 @@ import {MatDivider} from "@angular/material/divider";
 import {FormsModule} from "@angular/forms";
 import {MatButton} from "@angular/material/button";
 import {StoreService} from "../../../core/services/store.service";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MatDialogRef} from "@angular/material/dialog";
 import {AsyncPipe} from "@angular/common";
 
 @Component({
@@ -18,13 +18,12 @@ import {AsyncPipe} from "@angular/common";
     MatButton,
     AsyncPipe
   ],
-  templateUrl: './filters-dialog.component.html',
-  styleUrl: './filters-dialog.component.scss'
+  templateUrl: './product-filters-dialog.component.html',
+  styleUrl: './product-filters-dialog.component.scss'
 })
-export class FiltersDialogComponent {
+export class ProductFiltersDialogComponent {
   shopService = inject(StoreService);
-  private dialogRef = inject(MatDialogRef<FiltersDialogComponent>);
-  data = inject(MAT_DIALOG_DATA);
+  private dialogRef = inject(MatDialogRef<ProductFiltersDialogComponent>);
 
   selectedAuthors: string[] = [];
   selectedGenres: string[] = [];

@@ -1,5 +1,5 @@
-import {Component, Injectable} from '@angular/core';
-import {MatPaginatorIntl, MatPaginatorModule} from "@angular/material/paginator";
+import {Injectable} from "@angular/core";
+import {MatPaginatorIntl} from "@angular/material/paginator";
 import {Subject} from "rxjs";
 
 @Injectable()
@@ -21,16 +21,4 @@ export class UkrainianPaginatorIntl implements MatPaginatorIntl  {
     const endIndex = startIndex < length ? Math.min(startIndex + pageSize, length) : startIndex + pageSize;
     return `${startIndex + 1} - ${endIndex} з ${length}`;
   };
-}
-
-
-@Component({
-  selector: 'app-ukrainian-paginator',
-  standalone: true,
-  imports: [MatPaginatorModule],
-  providers: [{provide: MatPaginatorIntl, useClass: UkrainianPaginatorIntl}],
-  templateUrl: './ukrainian-paginator.component.html',
-  styleUrl: './ukrainian-paginator.component.scss'
-})
-export class UkrainianPaginatorComponent  extends MatPaginatorIntl {
 }

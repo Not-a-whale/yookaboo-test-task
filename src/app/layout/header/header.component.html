@@ -1,13 +1,13 @@
-<header class="border-b shadow-md p-3 w-full max-h-20 fixed top-0 z-50 bg-white">
+<header class="border-b shadow-md px-8 py-2 w-full max-h-20 fixed top-0 z-50 bg-[#fff]">
   <div class="flex align-middle items-center justify-between max-w-screen-2xl mx-auto">
     <nav class="flex justify-between items-center w-full uppercase text-xl">
       <a routerLink="/" routerLinkActive="active">
         <img alt="app logo" class="max-h-16" src="assets/images/logo.png"/>
       </a>
       @if (!isCreate) {
-        <a class="hover:text-primary" routerLink="/create" routerLinkActive="active">Create Book</a>
+        <a class="hover:text-primary" routerLink="/create" routerLinkActive="active">Створити товар</a>
       } @else {
-        <a class="hover:text-primary" routerLink="/" routerLinkActive="active">To Store</a>
+        <a class="hover:text-primary" routerLink="/" routerLinkActive="active">До товарів</a>
       }
     </nav>
   </div>

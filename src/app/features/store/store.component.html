@@ -1,8 +1,6 @@
 @if (products) {
-  <div class="flex flex-col gap-3">
-    <div class="flex justify-between gap-3">
-      <div class="w-[200px]"></div>
-
+  <div class="flex flex-col gap-3 justify-between store-component">
+    <div class="flex justify-between gap-3 px-4 pr-6">
       <form
         class="relative flex items-center max-w-md mx-4"
         #searchForm="ngForm"
@@ -10,7 +8,7 @@
         <input
           name="search"
           [(ngModel)]="storeParams.search"
-          placeholder="Search a book"
+          placeholder="Шукати товар"
           type="search"
           class="block w-full p-4 text-sm text-gray-900 border-gray-300 rounded-lg min-w-[200px]"/>
         <button
@@ -28,24 +26,23 @@
           (click)="openFiltersDialog()"
         >
           <mat-icon>filter_list</mat-icon>
-          Filters
+          Фільтрувати
         </button>
         <button
           class="match-input-height"
           mat-stroked-button
           [mat-menu-trigger-for]="sortMenu">
           <mat-icon>swap_vert</mat-icon>
-          Sort
+          Сортувати
         </button>
       </div>
     </div>
-    <div class="grid grid-cols-5 gap-4">
+    <div class="grid grid-cols-4 xl:grid-cols-5 gap-4 flex-1 py-4 px-8">
       @for (product of products.data; track product.id) {
-        <p>{{ product.name }}</p>
-        <!-- <app-product-item [product]="product"></app-product-item>-->
+        <app-product-item [product]="product"></app-product-item>
       }
     </div>
-    <app-ukrainian-paginator
+    <mat-paginator
       class="bg-white"
       (page)="handlePageEvent($event)"
       [length]="products.count"
@@ -54,7 +51,7 @@
       [pageSizeOptions]="pageSizeOptions"
       [pageIndex]="storeParams.pageNumber - 1"
       aria-label="Select page"
-    ></app-ukrainian-paginator>
+    ></mat-paginator>
   </div>
 
   <mat-menu #sortMenu="matMenu">
