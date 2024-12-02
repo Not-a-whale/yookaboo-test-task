@@ -39,9 +39,9 @@ export class StoreComponent implements OnInit {
 
   products?: Pagination<Product>;
   sortOptions = [
-    { name: 'Alphabetical', value: 'name' },
-    { name: 'Price Low-High', value: 'priceAsc' },
-    { name: 'Price Hight-Low', value: 'priceDesc' },
+    { name: 'За алфавітом', value: 'name' },
+    { name: 'Ціна: За зростанням', value: 'priceAsc' },
+    { name: 'Ціна: За спадання', value: 'priceDesc' },
   ];
   storeParams = new StoreParams();
   pageSizeOptions = [5, 10, 15, 20];

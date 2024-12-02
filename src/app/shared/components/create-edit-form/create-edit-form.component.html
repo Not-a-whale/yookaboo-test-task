@@ -1,0 +1,130 @@
+<mat-card class="max-w-lg mx-auto mt-32 p-8 bg-white !bg-[#fff]">
+  <form (ngSubmit)="onSubmit()" [formGroup]="productForm" class="!bg-[#fff]">
+    <div class="text-center mb-6">
+      <h2 class="text-2xl font-semibold text-primary">{{isEdit ? "Редагувати товар" : "Створити товар"}}</h2>
+    </div>
+    <mat-form-field appearance="outline" class="w-full mb-4">
+      <mat-label>Назва товару</mat-label>
+      <input [formControl]="productForm.controls.name" matInput placeholder="Назва товару" />
+      @if (productForm.controls.name.hasError('required')) {
+        <mat-error>Назва товару є обов'язковим полем</mat-error>
+      }
+      @if (productForm.controls.name.hasError('minlength')) {
+        <mat-error>Назва має містити мінімум 6 символів</mat-error>
+      }
+      @if (productForm.controls.name.hasError('maxlength')) {
+        <mat-error>Назва занадто довга! Має бути не більше 100 символів</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-full mb-4">
+      <mat-label>Опис товару</mat-label>
+      <textarea [formControl]="productForm.controls.description" matInput placeholder="Опис товару"></textarea>
+      @if (productForm.controls.description.hasError('required')) {
+        <mat-error>Опис товару є обов'язковим полем</mat-error>
+      }
+      @if (productForm.controls.description.hasError('minlength')) {
+        <mat-error>Опис має містити мінімум 20 символів</mat-error>
+      }
+      @if (productForm.controls.description.hasError('maxlength')) {
+        <mat-error>Опис занадто довгий! Має бути не більше 666 символів</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-full mb-4">
+      <mat-label>Рік видання</mat-label>
+      <input [formControl]="productForm.controls.year" matInput placeholder="Рік видання" type="number" />
+      @if (productForm.controls.year.hasError('required')) {
+        <mat-error>Назва товару є обов'язковим полем</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-full mb-4">
+      <mat-label>Ціна</mat-label>
+      <input [formControl]="productForm.controls.price" matInput placeholder="Ціна" type="number" />
+      @if (productForm.controls.price.hasError('required')) {
+        <mat-error>Ціна є обов'язковим полем</mat-error>
+      }
+      @if (productForm.controls.price.hasError('min')) {
+        <mat-error>Ціна не може бути 0 та менше</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field class="w-full">
+      <mat-label >Посилання на зображення товару </mat-label>
+      <mat-chip-grid #reactiveChipGrid aria-label="ImgUrl links" [formControl]="productForm.controls.pictureUrls">
+        @for (pictureUrl of pictureUrls(); track pictureUrl) {
+          <mat-chip-row
+            (removed)="removeReactiveKeyword(pictureUrl)"
+          >
+            <a [href]=pictureUrl class="z-10">{{"Link " + (+$index + 1)}}</a>
+            <button matChipRemove aria-label="add link">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+        }
+      </mat-chip-grid>
+      <input
+        placeholder="Посилання"
+        [matChipInputFor]="reactiveChipGrid"
+        (matChipInputTokenEnd)="addReactiveKeyword($event)"
+      />
+
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-full mb-4">
+      <mat-label>Жанр</mat-label>
+      <input [formControl]="productForm.controls.genre" matInput placeholder="Жанр" type="text" [matAutocomplete]="genreAuto"/>
+      <mat-autocomplete #genreAuto="matAutocomplete">
+        @for (genre of storeService.getGenres() | async; track $index) {
+          <mat-option [value]="genre">{{genre}}</mat-option>
+        }
+      </mat-autocomplete>
+      @if (productForm.controls.genre.hasError('required')) {
+        <mat-error>Жанр обов'язковим полем</mat-error>
+      }
+      @if (productForm.controls.genre.hasError('minlength')) {
+        <mat-error>Поле жанр має містити мінімум 4 символи</mat-error>
+      }
+      @if (productForm.controls.genre.hasError('maxlength')) {
+        <mat-error>Значення поля жанр довге! Має бути не більше 20 символів</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-full mb-4">
+      <mat-label>Автор</mat-label>
+      <input [formControl]="productForm.controls.genre" matInput placeholder="Автор" type="text" [matAutocomplete]="authorAuto"/>
+      <mat-autocomplete  #authorAuto="matAutocomplete">
+        @for (genre of storeService.getAuthors() | async; track $index) {
+          <mat-option [value]="genre">{{genre}}</mat-option>
+        }
+      </mat-autocomplete>
+      @if (productForm.controls.author.hasError('required')) {
+        <mat-error>Автор є обов'язковим полем</mat-error>
+      }
+      @if (productForm.controls.author.hasError('minlength')) {
+        <mat-error>Поле автор має містити мінімум 4 символи</mat-error>
+      }
+      @if (productForm.controls.author.hasError('maxlength')) {
+        <mat-error>Значення поля автор довге! Має бути не більше 20 символів</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-full mb-4">
+      <mat-label>Залишок товару</mat-label>
+      <input [formControl]="productForm.controls.quantityInStock" matInput placeholder="Залишок товару" type="number" />
+      @if (productForm.controls.quantityInStock.hasError('required')) {
+        <mat-error>Залишок товару є обов'язковим полем</mat-error>
+      }
+      @if (productForm.controls.quantityInStock.hasError('min')) {
+        <mat-error>Залишок товару не може бути 0 та менше</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-full mb-4 !hover:cursor-pointer">
+      <mat-label class="!hover:cursor-pointer">Теги: </mat-label>
+      <div class="relative !hover:cursor-pointer">
+        <input matInput disabled  />
+        <button class="absolute top-1/2 left-[46px] transform -translate-y-[12px] flex items-center gap-1 !hover:cursor-pointer" aria-label="add tag">
+          <div class="py-0 px-4 rounded-[20px] border" [ngStyle]="{'border-color': 'red'}">
+            <span [ngStyle]="{'color': 'red'}">{{ "tag" }}</span>
+          </div>
+          <mat-icon class="!hover:cursor-pointer">add_circle</mat-icon>
+        </button>
+      </div>
+    </mat-form-field>
+    <button [disabled]="productForm.invalid" class="w-full py-2" mat-flat-button type="submit">{{ isEdit ? "Редагувати" : "Створити" }}</button>
+  </form>
+</mat-card>

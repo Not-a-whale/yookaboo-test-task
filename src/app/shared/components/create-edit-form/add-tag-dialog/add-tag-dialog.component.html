@@ -1,0 +1,28 @@
+<div>
+  <h3 class="text-3xl text-center pt-6 mb-3 text-primary">Додати тег</h3>
+  <mat-divider></mat-divider>
+  <div class="flex justify-center items-center p-8">
+    <mat-form-field appearance="outline" class="w-full mb-4">
+      <mat-label>Автор</mat-label>
+      <input [formControl]="tagForm.controls.name" matInput placeholder="Назва тегу" type="text" [matAutocomplete]="tagAuto"/>
+      <mat-autocomplete  #tagAuto="matAutocomplete">
+        @for (tag of storeService.getTags() | async; track $index) {
+          <mat-option [value]="tag.name">{{tag.name}}</mat-option>
+        }
+      </mat-autocomplete>
+      @if (tagForm.controls.name.hasError('required')) {
+        <mat-error>Назва тегу є обов'язковим полем</mat-error>
+      }
+      @if (tagForm.controls.name.hasError('minlength')) {
+        <mat-error>Назва тегу має містити мінімум 3 символи</mat-error>
+      }
+      @if (tagForm.controls.name.hasError('maxlength')) {
+        <mat-error>Значення поля автор довге! Має бути не більше 20 символів</mat-error>
+      }
+    </mat-form-field>
+  </div>
+  <div class="flex justify-center pt-2 pb-6 gap-4">
+    <button mat-flat-button>Видалити</button>
+    <button mat-flat-button>Скасувати</button>
+  </div>
+</div>

@@ -224,6 +224,13 @@ export class StoreService {
     );
   }
 
+  getTags() {
+    return this.products$.pipe(
+      map(products => products.map(product => product.tags).flat()),
+      map(tags => tags.filter((value, index, self) => self.findIndex(tag => tag.name === value.name) === index)
+    ));
+  }
+
   deleteProduct(id: string) {
     this.products$.next(this.products$.value.filter(product => product.id !== id));
   }

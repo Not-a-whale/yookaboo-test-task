@@ -37,13 +37,15 @@
         </button>
       </div>
     </div>
-    <div class="grid grid-cols-4 xl:grid-cols-5 gap-4 flex-1 py-4 px-8">
-      @for (product of products.data; track product.id) {
-        <app-product-item [product]="product"></app-product-item>
-      }
+    <div class="flex-1 pb-[56px]">
+      <div class="grid grid-cols-4 xl:grid-cols-5 gap-4 py-4 px-8">
+        @for (product of products.data; track product.id) {
+          <app-product-item [product]="product"></app-product-item>
+        }
+      </div>
     </div>
     <mat-paginator
-      class="bg-white"
+      class="bg-white w-[100vw] fixed bottom-0 left-0 z-10"
       (page)="handlePageEvent($event)"
       [length]="products.count"
       [pageSize]="storeParams.pageSize"
