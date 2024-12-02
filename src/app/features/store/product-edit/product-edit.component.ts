@@ -1,12 +1,69 @@
-import { Component } from '@angular/core';
+import {Component, Inject, inject, OnInit} from '@angular/core';
+import {ToastrService} from "ngx-toastr";
+import {StoreService} from "../../../core/services/store.service";
+import {Product} from "../../../shared/models/product";
+import {CreateEditFormComponent} from "../../../shared/components/create-edit-form/create-edit-form.component";
+import {ProductDetailComponent} from "../product-detail/product-detail.component";
+import {ActivatedRoute, Router} from "@angular/router";
+import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
+import {
+  DeleteProductDialogComponent
+} from "../../../shared/components/modals/delete-product/delete-product-dialog.component";
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-edit-book',
   standalone: true,
-  imports: [],
+  imports: [
+    CreateEditFormComponent,
+    ProductDetailComponent,
+    MatButton
+  ],
   templateUrl: './product-edit.component.html',
   styleUrl: './product-edit.component.scss'
 })
-export class ProductEditComponent {
+export class ProductEditComponent implements OnInit {
+  toastrService = inject(ToastrService);
+  storeService = inject(StoreService);
+  dialogService = inject(MatDialog);
+  router = inject(Router);
+  route = inject(ActivatedRoute);
 
+  product: Omit<Product, 'id'> | Product | null = null;
+  id: string | null = null;
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { id: string }) {
+    this.id = data.id;
+  }
+
+  onUpdated($event: Omit<Product, "id">) {
+    this.product = $event;
+    this.storeService.addProduct(this.product);
+    this.toastrService.success('Продукт відредаговано успішно!');
+  }
+
+  ngOnInit() {
+    if (this.id) {
+      this.storeService.getProduct(String(this.id)).subscribe(product => {
+        if (product) {
+          console.log(product);
+          this.product = product;
+        }
+      });
+    }
+  }
+
+  openDeleteDialog() {
+    const dialogRef = this.dialogService.open(DeleteProductDialogComponent, {
+      data: this.product,
+    });
+    dialogRef.afterClosed().subscribe({
+      next: (result) => {
+        if (result) {
+          this.storeService.deleteProduct(this.id || '');
+          this.router.navigate(['/'], { relativeTo: this.route });
+        }
+      },
+    });
+  }
 }

@@ -8,14 +8,13 @@ import {
 } from "./features/store/product-edit/product-edit-dialog/product-edit-dialog.component";
 
 export const routes: Routes = [
-  { path: '', component: StoreComponent, children: [
-    {
-      path: 'edit/:id',
-      component: ProductEditDialogComponent,
-      data: { component: ProductEditComponent }
-    }]
-  },
+  { path: '', component: StoreComponent},
   { path: 'create', component: ProductCreateComponent },
+  {
+    path: 'edit/:id',
+    component: ProductEditDialogComponent,
+    data: { component: ProductEditComponent }
+  },
   { path: 'not-found', component: NotFoundComponent },
   { path: '**', redirectTo: 'not-found', pathMatch: 'full' },
 ];

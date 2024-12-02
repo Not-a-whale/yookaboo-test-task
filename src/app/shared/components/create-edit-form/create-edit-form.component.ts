@@ -47,7 +47,7 @@ import {ToastrService} from "ngx-toastr";
   styleUrl: './create-edit-form.component.scss'
 })
 export class CreateEditFormComponent implements OnInit {
-  @Input() product: Product | null = null;
+  @Input() product: Product | Omit<Product, 'id'> | null = null;
   @Output() created: EventEmitter<Omit<Product, 'id'>> = new EventEmitter<Omit<Product, 'id'>>();
   fb = inject(FormBuilder);
   storeService = inject(StoreService);
@@ -73,6 +73,10 @@ export class CreateEditFormComponent implements OnInit {
       quantityInStock: [this.product?.quantityInStock || 0, [Validators.required, Validators.min(0)]],
       tags: [!!this.product?.tags?.length ? this.product.tags : []]
     });
+
+    if (this.product && this.product.pictureUrls.length) {
+      this.pictureUrls.update(() => [...this.productForm.controls.pictureUrls.value]);
+    }
   }
 
   onSubmit() {

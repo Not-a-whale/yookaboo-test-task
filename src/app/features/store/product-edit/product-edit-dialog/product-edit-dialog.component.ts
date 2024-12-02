@@ -17,11 +17,18 @@ export class ProductEditDialogComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   openDialog(data: Data): void {
-    const dialogRef = this.dialog.open(data["component"], {});
-    dialogRef.afterClosed().subscribe(_ => this.router.navigate(['..'], { relativeTo: this.route }));
+    const dialogRef = this.dialog.open(data["component"], {
+      minWidth: '90vw',
+      data: {
+        id: this.route.snapshot.params["id"]
+      }
+    });
+    dialogRef.afterClosed().subscribe(_ => this.router.navigate(['/']));
   }
 
   ngOnInit() {
+    console.log(this.route.data);
+    console.log(this.route.snapshot.params);
     this.route.data.subscribe(data => this.openDialog(data));
   }
 }

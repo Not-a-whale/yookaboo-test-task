@@ -205,7 +205,7 @@ export class StoreService {
     );
   }
 
-  getProuct(id: number) {
+  getProduct(id: string) {
     return this.products$.pipe(
       map(products => products.find(product => product.id === String(id)))
     );
