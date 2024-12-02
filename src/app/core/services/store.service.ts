@@ -168,6 +168,7 @@ export class StoreService {
   private products$ = new BehaviorSubject<Product[]>(products);
 
   getProducts(shopParams: StoreParams): Observable<Pagination<Product>> {
+    console.log(shopParams);
     return this.products$.pipe(
       map(products => {
         return products.filter(product => {
@@ -177,7 +178,9 @@ export class StoreService {
           if (shopParams.genres.length > 0 && !shopParams.genres.includes(product.genre)) {
             return false;
           }
-          return !(shopParams.search && !product.name.toLowerCase().includes(shopParams.search));
+          console.log(product.name.toLowerCase());
+          console.log(shopParams.search);
+          return !(shopParams.search && !product.name.toLowerCase().includes(shopParams.search.toLowerCase()));
         });
       }),
       map(products => {
