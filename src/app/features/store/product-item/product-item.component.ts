@@ -15,6 +15,7 @@ import {ProductFiltersDialogComponent} from "../product-filters-dialog/product-f
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteProductDialogComponent} from "../../../shared/components/modals/delete-product/delete-product-dialog.component";
 import {StoreService} from "../../../core/services/store.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-product-item',
@@ -40,6 +41,7 @@ import {StoreService} from "../../../core/services/store.service";
 export class ProductItemComponent {
   dialogService = inject(MatDialog);
   storeService = inject(StoreService);
+  router = inject(Router);
   @Input() product: Product | null = null;
 
   openDeleteDialog() {
@@ -53,5 +55,9 @@ export class ProductItemComponent {
         }
       },
     });
+  }
+
+  onEdit() {
+    this.router.navigate(['edit', this.product?.id]);
   }
 }

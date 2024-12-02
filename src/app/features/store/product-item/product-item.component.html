@@ -1,7 +1,13 @@
 @if (product) {
   <mat-card class="product-card h-full flex flex-col justify-between" appearance="outlined">
     <div class="img-wrapper border-b-primary pt-2">
-      <img class="product-image h-[250px] w-full object-contain" mat-card-image [src]="product?.pictureUrls?.[0]" alt="{{'image for ' + product.name}}">
+      @if (product.pictureUrls.length) {
+        <img class="product-image h-[250px] w-full object-contain" mat-card-image [src]="product.pictureUrls[0]"
+             alt="{{'image for ' + product.name}}">
+      } @else {
+        <img class="product-image h-[250px] w-full object-contain" mat-card-image src="assets/images/no-image.jpg"
+             alt="no image"/>
+      }
     </div>
     <div class="product-card-main flex-1">
       <mat-card-header>
@@ -14,7 +20,8 @@
         <mat-card-subtitle>Рік видання: <b>{{ product.year }}</b></mat-card-subtitle>
         <mat-card-subtitle>Кількість: <b>{{ product.quantityInStock }}</b></mat-card-subtitle>
         <div class="flex gap-2 mt-2">
-          <div class="py-0 px-4 rounded-[20px] border pointer-events-none" [ngStyle]="{'border-color': tag.hexColor}" *ngFor="let tag of product.tags">
+          <div class="py-0 px-4 rounded-[20px] border pointer-events-none" [ngStyle]="{'border-color': tag.hexColor}"
+               *ngFor="let tag of product.tags">
             <span [ngStyle]="{'color': tag.hexColor}">{{ tag.name }}</span>
           </div>
         </div>
@@ -22,7 +29,7 @@
     </div>
     <mat-card-actions class="flex items-center justify-between w-10/12 mx-auto">
       <button mat-button (click)="openDeleteDialog()">Видалити</button>
-      <button mat-button>Редагувати</button>
+      <button mat-button (click)="onEdit()">Редагувати</button>
     </mat-card-actions>
   </mat-card>
 }

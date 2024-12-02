@@ -1,1 +1,4 @@
-<app-create-edit-form></app-create-edit-form>
+<div class="pb-12 px-10 mt-32 flex gap-8">
+  <app-create-edit-form (created)="onCreated($event)"></app-create-edit-form>
+  <app-product-detail class="flex-1" [product]="product"></app-product-detail>
+</div>

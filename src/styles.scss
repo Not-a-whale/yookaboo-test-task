@@ -1,5 +1,9 @@
 @use '@angular/material' as mat;
 
+// regular style toast
+@import 'ngx-toastr/toastr';
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

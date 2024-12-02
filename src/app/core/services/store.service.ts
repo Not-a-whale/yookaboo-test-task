@@ -3,6 +3,7 @@ import {StoreParams} from "../../shared/models/storeParams";
 import {Product} from "../../shared/models/product";
 import {BehaviorSubject, map, Observable, of} from "rxjs";
 import {Pagination} from "../../shared/models/pagination";
+import {nanoid} from "nanoid";
 
 
 const products = [
@@ -229,6 +230,17 @@ export class StoreService {
       map(products => products.map(product => product.tags).flat()),
       map(tags => tags.filter((value, index, self) => self.findIndex(tag => tag.name === value.name) === index)
     ));
+  }
+
+  addProduct(product: Omit<Product, 'id'>) {
+    this.products$.next([...this.products$.value, {
+      id: nanoid(),
+      ...product
+    }]);
+  }
+
+  updateProduct(product: Product) {
+    this.products$.next(this.products$.value.map(p => p.id === product.id ? product : p));
   }
 
   deleteProduct(id: string) {

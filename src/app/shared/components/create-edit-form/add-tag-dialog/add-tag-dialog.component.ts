@@ -11,6 +11,8 @@ import {AsyncPipe} from "@angular/common";
 import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from "@angular/material/autocomplete";
 import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
+import {ColorPickerModule} from "primeng/colorpicker";
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-add-tag-dialog',
@@ -27,7 +29,8 @@ import {MatInput} from "@angular/material/input";
     MatFormField,
     MatInput,
     MatLabel,
-    MatOption
+    MatOption,
+    ColorPickerModule
   ],
   templateUrl: './add-tag-dialog.component.html',
   styleUrl: './add-tag-dialog.component.scss'
@@ -35,6 +38,7 @@ import {MatInput} from "@angular/material/input";
 export class AddTagDialogComponent implements OnInit {
   fb = inject(FormBuilder);
   storeService = inject(StoreService);
+  private dialogRef = inject(MatDialogRef<AddTagDialogComponent>);
 
   tagForm!: FormGroup<TagForm>;
 
@@ -47,6 +51,13 @@ export class AddTagDialogComponent implements OnInit {
   }
 
   onSubmit() {
+    this.dialogRef.close({
+      name: this.tagForm.value.name,
+      hexColor: this.tagForm.value.hexColor
+    });
+  }
 
+  close() {
+    this.dialogRef.close();
   }
 }

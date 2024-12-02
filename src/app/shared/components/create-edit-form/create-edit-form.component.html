@@ -1,4 +1,4 @@
-<mat-card class="max-w-lg mx-auto mt-32 p-8 bg-white !bg-[#fff]">
+<mat-card class="max-w-lg mx-auto mb-12 p-8 bg-white !bg-[#fff]">
   <form (ngSubmit)="onSubmit()" [formGroup]="productForm" class="!bg-[#fff]">
     <div class="text-center mb-6">
       <h2 class="text-2xl font-semibold text-primary">{{isEdit ? "Редагувати товар" : "Створити товар"}}</h2>
@@ -53,7 +53,7 @@
           <mat-chip-row
             (removed)="removeReactiveKeyword(pictureUrl)"
           >
-            <a [href]=pictureUrl class="z-10">{{"Link " + (+$index + 1)}}</a>
+            <p class="max-w-[50px] truncate pr-20">{{ pictureUrl }}</p>
             <button matChipRemove aria-label="add link">
               <mat-icon>cancel</mat-icon>
             </button>
@@ -87,7 +87,7 @@
     </mat-form-field>
     <mat-form-field appearance="outline" class="w-full mb-4">
       <mat-label>Автор</mat-label>
-      <input [formControl]="productForm.controls.genre" matInput placeholder="Автор" type="text" [matAutocomplete]="authorAuto"/>
+      <input [formControl]="productForm.controls.author" matInput placeholder="Автор" type="text" [matAutocomplete]="authorAuto"/>
       <mat-autocomplete  #authorAuto="matAutocomplete">
         @for (genre of storeService.getAuthors() | async; track $index) {
           <mat-option [value]="genre">{{genre}}</mat-option>
@@ -113,18 +113,16 @@
         <mat-error>Залишок товару не може бути 0 та менше</mat-error>
       }
     </mat-form-field>
-    <mat-form-field appearance="outline" class="w-full mb-4 !hover:cursor-pointer">
-      <mat-label class="!hover:cursor-pointer">Теги: </mat-label>
-      <div class="relative !hover:cursor-pointer">
-        <input matInput disabled  />
-        <button class="absolute top-1/2 left-[46px] transform -translate-y-[12px] flex items-center gap-1 !hover:cursor-pointer" aria-label="add tag">
-          <div class="py-0 px-4 rounded-[20px] border" [ngStyle]="{'border-color': 'red'}">
-            <span [ngStyle]="{'color': 'red'}">{{ "tag" }}</span>
+      <div class="relative !hover:cursor-pointer h-[56px] w-full flex mb-[40px] tag-input">
+        <mat-label class="!hover:cursor-pointer absolute">Теги: </mat-label>
+        <input class="w-full" matInput disabled  />
+        <button type="button" class="absolute top-1/2 left-[18px] transform -translate-y-[12px] flex items-center gap-2 !hover:cursor-pointer" aria-label="add tag">
+          <div class="py-0 px-4 rounded-[20px] border" *ngFor="let tag of productForm.controls.tags.value" [ngStyle]="{'border-color': tag.hexColor}">
+            <span [ngStyle]="{'color': tag.hexColor}">{{ tag.name }}</span>
           </div>
-          <mat-icon class="!hover:cursor-pointer">add_circle</mat-icon>
+          <mat-icon class="!hover:cursor-pointer" (click)="openAddTagDialog()">add_circle</mat-icon>
         </button>
       </div>
-    </mat-form-field>
     <button [disabled]="productForm.invalid" class="w-full py-2" mat-flat-button type="submit">{{ isEdit ? "Редагувати" : "Створити" }}</button>
   </form>
 </mat-card>

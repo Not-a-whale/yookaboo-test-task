@@ -1,0 +1,29 @@
+@if (product) {
+  <mat-card class="max-w-lg mx-auto mb-12 p-8 bg-white !bg-[#fff]">
+    <h2>{{product.name}}</h2>
+    <div class="img-container">
+      @if (product.pictureUrls[0]) {
+        <img [src]="product.pictureUrls[0]" alt="{{product.name}} image">
+      } @else {
+        <img [src]="'assets/images/no-image.jpg'" alt="no image placeholder">
+      }
+    </div>
+    <div class="card-content">
+      <p>Автор: <b>{{product.author}}</b></p>
+      <p>Ціна: <b>{{product.price | currency:'₴'}}</b></p>
+      <p>Жанр: <b>{{product.genre}}</b></p>
+      <p>Рік видання: <b>{{product.year}}</b></p>
+      <p>Кількість: <b>{{product.quantityInStock}}</b></p>
+      <div class="tags flex gap-2">
+        <div class="py-0 px-4 rounded-[20px] border w-fit" *ngFor="let tag of product.tags" [ngStyle]="{'border-color': tag.hexColor}">
+          <span [ngStyle]="{'color': tag.hexColor}">{{ tag.name }}</span>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+} @else {
+  <div>
+    <h2 class="text-xl p-4 text-center">Продукт буде додано сюди</h2>
+  </div>
+}
+

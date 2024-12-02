@@ -1,4 +1,4 @@
-import {Component, inject, Input, OnInit, signal} from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnInit, Output, signal} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Product} from "../../models/product";
 import {ProductForm} from "../../models/forms/product-form";
@@ -12,6 +12,13 @@ import {MatButton} from "@angular/material/button";
 import {MatChipGrid, MatChipInput, MatChipInputEvent, MatChipRow, MatChipsModule} from "@angular/material/chips";
 import {MatIcon, MatIconModule} from "@angular/material/icon";
 import {LiveAnnouncer} from "@angular/cdk/a11y";
+import {MatDialog} from "@angular/material/dialog";
+import {
+  ProductFiltersDialogComponent
+} from "../../../features/store/product-filters-dialog/product-filters-dialog.component";
+import {AddTagDialogComponent} from "./add-tag-dialog/add-tag-dialog.component";
+import {Tag} from "../../models/tag";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-create-edit-form',
@@ -41,9 +48,12 @@ import {LiveAnnouncer} from "@angular/cdk/a11y";
 })
 export class CreateEditFormComponent implements OnInit {
   @Input() product: Product | null = null;
+  @Output() created: EventEmitter<Omit<Product, 'id'>> = new EventEmitter<Omit<Product, 'id'>>();
   fb = inject(FormBuilder);
   storeService = inject(StoreService);
   announcer = inject(LiveAnnouncer);
+  dialogService = inject(MatDialog);
+  toastrService = inject(ToastrService);
 
   productForm!: FormGroup<ProductForm>;
   isEdit = !!this.product;
@@ -66,13 +76,18 @@ export class CreateEditFormComponent implements OnInit {
   }
 
   onSubmit() {
-
+    if (this.productForm.valid) {
+      this.created.emit(this.productForm.value as Omit<Product, 'id'>);
+      this.productForm.reset();
+      this.pictureUrls.update(() => [] as string[]);
+    }
   }
 
   addReactiveKeyword($event: MatChipInputEvent) {
     const value = ($event?.value || '').trim();
 
     if (value && this.productForm.controls.pictureUrls.value.length < 4) {
+      console.log(value)
       this.productForm.controls.pictureUrls.value.push(value);
       this.pictureUrls.update(pictureUrls => [...this.productForm.controls.pictureUrls.value]);
       this.announcer.announce(`added ${value} to reactive form`);
@@ -88,5 +103,24 @@ export class CreateEditFormComponent implements OnInit {
       this.pictureUrls.update(pictureUrls => [...this.productForm.controls.pictureUrls.value]);
       this.announcer.announce(`removed ${pictureUrl} from reactive form`);
     }
+  }
+
+  openAddTagDialog() {
+    const dialogRef = this.dialogService.open(AddTagDialogComponent, {
+      minWidth: '500px',
+      maxHeight: '80vh',
+    });
+    dialogRef.afterClosed().subscribe({
+      next: (result: Tag) => {
+        if (result) {
+          if (this.productForm.controls.tags.value.length < 4
+            && !this.productForm.controls.tags.value.find(tag => tag.name === result.name)) {
+            this.productForm.controls.tags.value.push(result);
+          } else {
+            this.toastrService.error('Не можна додати більше 4 тегів або тег з такою назвою вже існує!');
+          }
+        }
+      },
+    });
   }
 }
