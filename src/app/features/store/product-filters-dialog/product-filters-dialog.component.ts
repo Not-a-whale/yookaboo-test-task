@@ -29,7 +29,6 @@ export class ProductFiltersDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { selectedAuthors: string[], selectedGenres: string[] }) {
     this.selectedAuthors = data.selectedAuthors;
     this.selectedGenres = data.selectedGenres;
-    console.log(data);
   }
 
   selectedAuthors: string[] = [];

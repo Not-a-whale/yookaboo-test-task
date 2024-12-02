@@ -55,7 +55,6 @@ export class StoreComponent implements OnInit {
     this.storeService.getGenres();
     if (localStorage.getItem('storeParams')) {
       this.storeParams = JSON.parse(localStorage.getItem('storeParams')!);
-      console.log(this.storeParams);
     }
     this.getProducts();
   }

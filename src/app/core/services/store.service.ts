@@ -177,8 +177,6 @@ export class StoreService {
           if (shopParams.genres.length > 0 && !shopParams.genres.includes(product.genre)) {
             return false;
           }
-          console.log(product.name.toLowerCase());
-          console.log(shopParams.search);
           return !(shopParams.search && !product.name.toLowerCase().includes(shopParams.search.toLowerCase()));
         });
       }),
@@ -242,9 +240,7 @@ export class StoreService {
   }
 
   updateProduct(product: Product) {
-    console.log(product);
     this.products$.next(this.products$.value.map(p => p.id === product.id ? product : p));
-    console.log(this.products$.value);
   }
 
   deleteProduct(id: string) {

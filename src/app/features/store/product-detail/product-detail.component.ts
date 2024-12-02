@@ -16,10 +16,6 @@ import {CurrencyPipe, NgForOf, NgOptimizedImage, NgStyle} from "@angular/common"
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss'
 })
-export class ProductDetailComponent implements OnChanges {
+export class ProductDetailComponent {
   @Input() product: Omit<Product, 'id'> | null = null;
-
-  ngOnChanges(changes: SimpleChanges) {
-    console.log(this.product)
-  }
 }

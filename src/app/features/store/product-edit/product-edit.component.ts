@@ -48,7 +48,6 @@ export class ProductEditComponent implements OnInit {
   ngOnInit() {
     if (this.id) {
       this.storeService.getProduct(String(this.id)).pipe(take(1)).subscribe(product => {
-        console.log(this.product)
         if (product && !this.product) {
           this.product = product;
         }
