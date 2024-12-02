@@ -1,12 +1,15 @@
 @if (product) {
   <mat-card class="max-w-lg mx-auto mb-12 p-8 bg-white !bg-[#fff]">
-    <h2>{{product.name}}</h2>
+    <h2 class="text-xl font-bold mb-4">{{product.name}}</h2>
     <div class="img-container">
       @if (product.pictureUrls[0]) {
-        <img [src]="product.pictureUrls[0]" alt="{{product.name}} image">
+        <img class="mb-4" [src]="product.pictureUrls[0]" alt="{{product.name}} image">
       } @else {
-        <img [src]="'assets/images/no-image.jpg'" alt="no image placeholder">
+        <img class="mb-4" [src]="'assets/images/no-image.jpg'" alt="no image placeholder">
       }
+      <div class="small-image-container flex gap-2 mb-4">
+        <img class="w-[100px] h-[100px] object-contain hover:cursor-pointer" *ngFor="let url of product.pictureUrls.slice(1, 4)" [src]="url" alt="{{product.name}} image">
+      </div>
     </div>
     <div class="card-content">
       <p>Автор: <b>{{product.author}}</b></p>

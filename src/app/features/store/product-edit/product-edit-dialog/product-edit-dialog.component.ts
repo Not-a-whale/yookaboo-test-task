@@ -20,7 +20,7 @@ export class ProductEditDialogComponent implements OnInit {
 
   openDialog(data: Data): void {
     this.dialogRef = this.dialog.open(data["component"], {
-      minWidth: '70vw',
+      minWidth: '55vw',
       maxHeight: '90vh',
       data: {
         id: this.route.snapshot.params["id"],

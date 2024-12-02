@@ -4,10 +4,11 @@
       <a routerLink="/" routerLinkActive="active">
         <img alt="app logo" class="max-h-16" src="assets/images/logo.png"/>
       </a>
+      <h2 class="pointer-events-none">Адмінська панель</h2>
       @if (!isCreate) {
-        <a class="hover:text-primary" routerLink="/create" routerLinkActive="active">Створити товар</a>
+        <a class="hover:text-primary text-lg" routerLink="/create" routerLinkActive="active">Створити товар</a>
       } @else {
-        <a class="hover:text-primary" routerLink="/" routerLinkActive="active">До товарів</a>
+        <a class="hover:text-primary text-lg" routerLink="/" routerLinkActive="active">До товарів</a>
       }
     </nav>
   </div>
