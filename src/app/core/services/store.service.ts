@@ -205,7 +205,7 @@ export class StoreService {
     );
   }
 
-  getProduct(id: string) {
+  getProduct(id: string): Observable<any> {
     return this.products$.pipe(
       map(products => products.find(product => product.id === String(id)))
     );
@@ -240,7 +240,9 @@ export class StoreService {
   }
 
   updateProduct(product: Product) {
+    console.log(product);
     this.products$.next(this.products$.value.map(p => p.id === product.id ? product : p));
+    console.log(this.products$.value);
   }
 
   deleteProduct(id: string) {

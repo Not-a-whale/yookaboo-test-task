@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {ActivatedRoute, Data, Router} from "@angular/router";
 
@@ -11,24 +11,30 @@ import {ActivatedRoute, Data, Router} from "@angular/router";
 })
 export class ProductEditDialogComponent implements OnInit {
 
+  dialogRef: MatDialogRef<any> | null = null;
+
   constructor(
     private dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute) { }
 
   openDialog(data: Data): void {
-    const dialogRef = this.dialog.open(data["component"], {
-      minWidth: '90vw',
+    this.dialogRef = this.dialog.open(data["component"], {
+      minWidth: '70vw',
+      maxHeight: '90vh',
       data: {
-        id: this.route.snapshot.params["id"]
+        id: this.route.snapshot.params["id"],
       }
     });
-    dialogRef.afterClosed().subscribe(_ => this.router.navigate(['/']));
+    this.dialogRef.afterClosed().subscribe(_ => this.router.navigate(['/']));
   }
 
   ngOnInit() {
-    console.log(this.route.data);
-    console.log(this.route.snapshot.params);
-    this.route.data.subscribe(data => this.openDialog(data));
+    this.route.data.subscribe(data => {
+      this.openDialog(data);
+      if (!this.route.snapshot.params["id"]) {
+        this.dialogRef?.close();
+      }
+    });
   }
 }

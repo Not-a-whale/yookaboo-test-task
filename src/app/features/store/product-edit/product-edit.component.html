@@ -1,5 +1,5 @@
 <div class="px-10 py-6 flex items-center gap-8">
-  <app-create-edit-form [product]="product" (created)="onUpdated($event)"></app-create-edit-form>
+  <app-create-edit-form [isEdit]="true" [product]="product" (updated)="onUpdated($event)"></app-create-edit-form>
   <div class="w-fit flex justify-center items-center mx-auto flex-col">
     <app-product-detail class="flex-1" [product]="product"></app-product-detail>
     <button mat-flat-button (click)="openDeleteDialog()">Видалити</button>

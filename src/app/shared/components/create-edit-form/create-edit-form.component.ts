@@ -1,4 +1,4 @@
-import {Component, EventEmitter, inject, Input, OnInit, Output, signal} from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, signal, SimpleChanges} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Product} from "../../models/product";
 import {ProductForm} from "../../models/forms/product-form";
@@ -47,8 +47,11 @@ import {ToastrService} from "ngx-toastr";
   styleUrl: './create-edit-form.component.scss'
 })
 export class CreateEditFormComponent implements OnInit {
-  @Input() product: Product | Omit<Product, 'id'> | null = null;
+  @Input() product: Product | null = null;
+  @Input() isEdit = !!this.product;
   @Output() created: EventEmitter<Omit<Product, 'id'>> = new EventEmitter<Omit<Product, 'id'>>();
+  @Output() updated: EventEmitter<Product> = new EventEmitter<Product>();
+
   fb = inject(FormBuilder);
   storeService = inject(StoreService);
   announcer = inject(LiveAnnouncer);
@@ -56,7 +59,7 @@ export class CreateEditFormComponent implements OnInit {
   toastrService = inject(ToastrService);
 
   productForm!: FormGroup<ProductForm>;
-  isEdit = !!this.product;
+
   readonly pictureUrls = signal([...this.product?.pictureUrls || []]);
 
 
@@ -81,9 +84,15 @@ export class CreateEditFormComponent implements OnInit {
 
   onSubmit() {
     if (this.productForm.valid) {
-      this.created.emit(this.productForm.value as Omit<Product, 'id'>);
-      this.productForm.reset();
-      this.pictureUrls.update(() => [] as string[]);
+      if (!this.isEdit) {
+        this.created.emit(this.productForm.value as Omit<Product, 'id'>);
+        this.productForm.reset();
+        this.pictureUrls.update(() => [] as string[]);
+      } else {
+        if (this.product) {
+          this.updated.emit({...this.productForm.value as Product, id: this.product.id});
+        }
+      }
     }
   }
 
@@ -91,7 +100,6 @@ export class CreateEditFormComponent implements OnInit {
     const value = ($event?.value || '').trim();
 
     if (value && this.productForm.controls.pictureUrls.value.length < 4) {
-      console.log(value)
       this.productForm.controls.pictureUrls.value.push(value);
       this.pictureUrls.update(pictureUrls => [...this.productForm.controls.pictureUrls.value]);
       this.announcer.announce(`added ${value} to reactive form`);
