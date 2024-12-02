@@ -22,6 +22,13 @@
       <div class="flex justify-between gap-4">
         <button
           class="match-input-height"
+          mat-raised-button
+          (click)="clearFilters()"
+        >
+          Скинути фільтри
+        </button>
+        <button
+          class="match-input-height"
           mat-stroked-button
           (click)="openFiltersDialog()"
         >

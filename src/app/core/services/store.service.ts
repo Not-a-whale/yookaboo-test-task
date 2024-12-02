@@ -168,7 +168,6 @@ export class StoreService {
   private products$ = new BehaviorSubject<Product[]>(products);
 
   getProducts(shopParams: StoreParams): Observable<Pagination<Product>> {
-    console.log(shopParams);
     return this.products$.pipe(
       map(products => {
         return products.filter(product => {

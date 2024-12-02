@@ -53,6 +53,10 @@ export class StoreComponent implements OnInit {
   initializeShop() {
     this.storeService.getAuthors();
     this.storeService.getGenres();
+    if (localStorage.getItem('storeParams')) {
+      this.storeParams = JSON.parse(localStorage.getItem('storeParams')!);
+      console.log(this.storeParams);
+    }
     this.getProducts();
   }
 
@@ -72,17 +76,17 @@ export class StoreComponent implements OnInit {
       minWidth: '500px',
       maxHeight: '80vh',
       data: {
-        selectedBrands: this.storeParams.authors,
-        selectedTypes: this.storeParams.genres,
+        selectedAuthors: this.storeParams.authors,
+        selectedGenres: this.storeParams.genres,
       },
     });
     dialogRef.afterClosed().subscribe({
       next: (result) => {
         if (result) {
-          console.log(result);
           this.storeParams.authors = result.selectedAuthors;
           this.storeParams.genres = result.selectedGenres;
           this.storeParams.pageNumber = 1;
+          localStorage.setItem('storeParams', JSON.stringify(this.storeParams));
           this.getProducts();
         }
       },
@@ -107,6 +111,12 @@ export class StoreComponent implements OnInit {
   handlePageEvent($event: PageEvent) {
     this.storeParams.pageNumber = $event.pageIndex + 1;
     this.storeParams.pageSize = $event.pageSize;
+    this.getProducts();
+  }
+
+  clearFilters() {
+    this.storeParams = new StoreParams();
+    localStorage.removeItem('storeParams');
     this.getProducts();
   }
 }

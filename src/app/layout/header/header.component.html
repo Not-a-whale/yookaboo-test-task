@@ -5,11 +5,13 @@
         <img alt="app logo" class="max-h-16" src="assets/images/logo.png"/>
       </a>
       <h2 class="pointer-events-none">Адмінська панель</h2>
-      @if (!isCreate) {
-        <a class="hover:text-primary text-lg" routerLink="/create" routerLinkActive="active">Створити товар</a>
-      } @else {
-        <a class="hover:text-primary text-lg" routerLink="/" routerLinkActive="active">До товарів</a>
-      }
+      <div class="w-[200px]">
+        @if (!isCreate) {
+          <a class="hover:text-primary text-lg" routerLink="/create" routerLinkActive="active">Створити товар</a>
+        } @else {
+          <a class="hover:text-primary text-lg" routerLink="/" routerLinkActive="active">До товарів</a>
+        }
+      </div>
     </nav>
   </div>
 </header>

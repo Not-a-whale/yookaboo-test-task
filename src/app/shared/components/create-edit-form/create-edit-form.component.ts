@@ -67,7 +67,7 @@ export class CreateEditFormComponent implements OnInit {
   ngOnInit() {
     this.productForm = this.fb.nonNullable.group({
       name: [this.product?.name || "", [Validators.required, Validators.minLength(6), Validators.maxLength(100)]],
-      description: [this.product?.description || "", [Validators.required, Validators.minLength(20), Validators.maxLength(666)]],
+      description: [this.product?.description || "", [Validators.required, Validators.minLength(20), Validators.maxLength(2000)]],
       year: [this.product?.year || 0, Validators.required],
       price: [this.product?.price || 0, [Validators.required, Validators.min(0)]],
       pictureUrls: [this.product?.pictureUrls.length ? this.product?.pictureUrls : [], Validators.required],

@@ -1,11 +1,12 @@
-import {Component, inject} from '@angular/core';
+import {Component, Inject, inject} from '@angular/core';
 import {MatListOption, MatSelectionList} from "@angular/material/list";
 import {MatDivider} from "@angular/material/divider";
 import {FormsModule} from "@angular/forms";
 import {MatButton} from "@angular/material/button";
 import {StoreService} from "../../../core/services/store.service";
-import {MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {AsyncPipe} from "@angular/common";
+import {Product} from "../../../shared/models/product";
 
 @Component({
   selector: 'app-filters-dialog',
@@ -24,6 +25,12 @@ import {AsyncPipe} from "@angular/common";
 export class ProductFiltersDialogComponent {
   shopService = inject(StoreService);
   private dialogRef = inject(MatDialogRef<ProductFiltersDialogComponent>);
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { selectedAuthors: string[], selectedGenres: string[] }) {
+    this.selectedAuthors = data.selectedAuthors;
+    this.selectedGenres = data.selectedGenres;
+    console.log(data);
+  }
 
   selectedAuthors: string[] = [];
   selectedGenres: string[] = [];

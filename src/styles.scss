@@ -51,3 +51,32 @@ button.match-input-height {
 
 html { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+@keyframes slide-left {
+  to {
+    transform: translateX(-33px);
+  }
+}
+
+@keyframes slide-right {
+  to {
+    transform: translateX(33px);
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+::view-transition-left(root) {
+  animation: 1s fade-out, 1s slide-left;
+}
+
+::view-transition-right(root) {
+  animation: 1s fade-out, 1s slide-right;
+}
+
+
